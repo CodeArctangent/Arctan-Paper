@@ -39,7 +39,7 @@
         });
 
         document.querySelector(".SIN").addEventListener("click", () => {
-            imageMaker.runComponent(10, 10, (x, y, width, height) => [x / width * Math.sin(x * 8) * 255, y / height * Math.cos(y * 8) * 255, 255 * Math.asin(x*y), 255]);
+            imageMaker.runComponent(10, 10, (x, y, width, height) => [x / width * Math.sin(x * 8) * 255, y / height * Math.cos(y * 8) * 255, 255 * Math.asin(x * y), 255]);
         });
     </script>
 </html>
