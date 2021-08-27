@@ -1,8 +1,6 @@
 class PXMAN {
 	constructor(initWidth, initHeight) {
 		this.image = ctx.createImageData(initWidth, initHeight);
-		this.width = initWidth;
-		this.height = initHeight;
 	}
 	
 	render(sx, sy) {
@@ -17,5 +15,15 @@ class PXMAN {
 		this.image.data[pos + 1] = g;
 		this.image.data[pos + 2] = b;
 		this.image.data[pos + 3] = a;
+	}
+
+	runComponent(sx, sy, callback) {
+		for (let y = 0; y < this.image.height; ++y) {
+			for (let x = 0; x < this.image.width; ++x) {
+				let [r, g, b, a] = callback(x, y, this.image.width, this.image.height);
+				this.setPixel(x, y, r, g, b, a);
+			}
+		}
+		this.render(sx, sy);
 	}
 }

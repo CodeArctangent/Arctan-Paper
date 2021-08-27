@@ -31,30 +31,15 @@
         const imageMaker = new PXMAN(width, height);
 
         document.querySelector(".UVB").addEventListener("click", () => {
-            for (let y = 0; y < height; ++y) {
-                for (let x = 0; x < width; ++x) {
-                    imageMaker.setPixel(x, y, x / width * 255, y / height * 255, (width - x) / width * 255, 255);
-                }
-            }
-            imageMaker.render(10, 10);
+            imageMaker.runComponent(10, 10, (x, y, width, height) => [x / width * 255, y / height * 255, (width - x) / width * 255, 255]);
         });
 
         document.querySelector(".UV").addEventListener("click", () => {
-            for (let y = 0; y < height; ++y) {
-                for (let x = 0; x < width; ++x) {
-                    imageMaker.setPixel(x, y, x / width * 255, y / height * 255, 0, 255);
-                }
-            }
-            imageMaker.render(10, 10);
+            imageMaker.runComponent(10, 10, (x, y, width, height) => [x / width * 255, y / height * 255, 0, 255]);
         });
 
         document.querySelector(".SIN").addEventListener("click", () => {
-            for (let y = 0; y < height; ++y) {
-                for (let x = 0; x < width; ++x) {
-                    imageMaker.setPixel(x, y, x / width * Math.sin(x * 8) * 255, y / height * Math.cos(y * 8) * 255, 255 * Math.asin(x*y), 255);
-                }
-            }
-            imageMaker.render(10, 10);
+            imageMaker.runComponent(10, 10, (x, y, width, height) => [x / width * Math.sin(x * 8) * 255, y / height * Math.cos(y * 8) * 255, 255 * Math.asin(x*y), 255]);
         });
     </script>
 </html>
