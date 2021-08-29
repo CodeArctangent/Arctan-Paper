@@ -15,9 +15,11 @@
     <button class="UVB">UVB Map</button>
     <button class="UV">UV Map</button>
     <button class="SIN">Sine/Cosine Testing</button>
+    <button class="Mandelbrot">Mandelbrot</button>
     <canvas class="rendererCanvas" wdth="100" height="100"></canvas>
 </body>
     <script src="pxman.js"></script>
+    <script src="mandelbrot.js"></script>
     <script>
         const cvs = document.querySelector(".rendererCanvas");
         const ctx = cvs.getContext("2d");
@@ -31,15 +33,22 @@
         const imageMaker = new PXMAN(width, height);
 
         document.querySelector(".UVB").addEventListener("click", () => {
-            imageMaker.runComponent(10, 10, (x, y, width, height) => [x / width * 255, y / height * 255, (width - x) / width * 255, 255]);
+            imageMaker.runComponent(0, 0, (x, y, width, height) => [x / width * 255, y / height * 255, (width - x) / width * 255, 255]);
         });
 
         document.querySelector(".UV").addEventListener("click", () => {
-            imageMaker.runComponent(10, 10, (x, y, width, height) => [x / width * 255, y / height * 255, 0, 255]);
+            imageMaker.runComponent(0, 0, (x, y, width, height) => [x / width * 255, y / height * 255, 0, 255]);
         });
 
         document.querySelector(".SIN").addEventListener("click", () => {
-            imageMaker.runComponent(10, 10, (x, y, width, height) => [x / width * Math.sin(x * 8) * 255, y / height * Math.cos(y * 8) * 255, 255 * Math.asin(x * y), 255]);
+            imageMaker.runComponent(0, 0, (x, y, width, height) => [x / width * Math.sin(x * 8) * 255, y / height * Math.cos(y * 8) * 255, 255 * Math.asin(x * y), 255]);
+        });
+        
+        document.querySelector(".Mandelbrot").addEventListener("click", () => {
+            imageMaker.runComponent(0, 0, (x, y, width, height) => {
+                const values = iterateEquation(x, y, 0, 100);
+                if (x == 100 && y == 100) console.log(values);
+                return [values.Tr, values.Ti, values.n]});
         });
     </script>
 </html>
