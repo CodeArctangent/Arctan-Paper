@@ -10,11 +10,7 @@ function iterateEquation(Cr, Ci, escapeRadius, iterations) {
         Tr = Zr * Zr;
         Ti = Zi * Zi;
     }
-    /*
-     * Four more iterations to decrease error term;
-     * see http://linas.org/art-gallery/escape/escape.html
-     */
-    for (var e = 0; e < 4; ++e) {
+    for (var e = 0; e < 4; ++e) { // Correction frames 
         Zi = 2 * Zr * Zi + Ci;
         Zr = Tr - Ti + Cr;
         Tr = Zr * Zr;
