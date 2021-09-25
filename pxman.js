@@ -1,12 +1,15 @@
 class PXMAN {
-	constructor(initWidth, initHeight, setCartesian) {
-		this.image = ctx.createImageData(initWidth, initHeight);
+	constructor(context, initWidth, initHeight, setCartesian) {
+		this.ctx = context;
+		this.image = this.ctx.createImageData(initWidth, initHeight);
 		this.cart = setCartesian;
+		this.ctx.canvas.width = initWidth;
+		this.ctx.canvas.height = initHeight;
 	}
 	
 	render(sx, sy) {
 		window.createImageBitmap(this.image).then((img) => {
-			ctx.drawImage(img, sx, sy);
+			this.ctx.drawImage(img, sx, sy);
 		});
 	}
 	
@@ -16,6 +19,15 @@ class PXMAN {
 		this.image.data[pos + 1] = g;
 		this.image.data[pos + 2] = b;
 		this.image.data[pos + 3] = a;
+	}
+	
+	getPixel(x, y) {
+		const pos = ((y * (this.image.width * 4)) + (x * 4));
+		let rgba = [this.image.data[pos],
+		this.image.data[pos + 1],
+		this.image.data[pos + 2],
+		this.image.data[pos + 3]];
+		return rgba;
 	}
 
 	runComponent(sx, sy, callback) {
