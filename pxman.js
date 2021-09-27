@@ -1,5 +1,5 @@
 class PXMAN {
-	constructor(context, initWidth, initHeight, setCartesian) {
+	constructor(context, initWidth, initHeight, setCartesian = false) {
 		this.ctx = context;
 		this.image = this.ctx.createImageData(initWidth, initHeight);
 		this.cart = setCartesian;
@@ -19,6 +19,15 @@ class PXMAN {
 		this.image.data[pos + 1] = g;
 		this.image.data[pos + 2] = b;
 		this.image.data[pos + 3] = a;
+	}
+
+	HexToRGB(hex) {
+		var rgbHex = hex.match(/.{1,2}/g);
+		return [
+			parseInt(rgbHex[0], 16),
+			parseInt(rgbHex[1], 16),
+			parseInt(rgbHex[2], 16)
+		];
 	}
 	
 	getPixel(x, y) {

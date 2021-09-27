@@ -30,7 +30,7 @@
         ctx.fillRect(0, 0, cvs.width, cvs.height);
 
         const [width, height] = [cvs.width, cvs.height];
-        const imageMaker = new PXMAN(width, height);
+        const imageMaker = new PXMAN(ctx, width, height);
 
         document.querySelector(".UVB").addEventListener("click", () => {
             imageMaker.runComponent(0, 0, (x, y, width, height) => [x / width * 255, y / height * 255, (width - x) / width * 255, 255]);
@@ -46,9 +46,12 @@
         
         document.querySelector(".Mandelbrot").addEventListener("click", () => {
             imageMaker.runComponent(0, 0, (x, y, width, height) => {
-                const values = iterateEquation(x, y, 0, 100);
-                if (x == 100 && y == 100) console.log(values);
-                return [values.Tr, values.Ti, values.n]});
+                const values = mandelbrot(x, y, 4);
+                if (x < 300 && y < 300) {
+                    console.log(values, x, y, width, height);
+                }
+                return [values[7], values[7], values[7]]
+        	});
         });
     </script>
 </html>
