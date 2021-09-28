@@ -16,6 +16,7 @@
     <button class="UV">UV Map</button>
     <button class="SIN">Sine/Cosine Testing</button>
     <button class="Mandelbrot">Mandelbrot</button>
+    <br>
     <canvas class="rendererCanvas" wdth="100" height="100"></canvas>
 </body>
     <script src="pxman.js"></script>
@@ -24,8 +25,8 @@
         const cvs = document.querySelector(".rendererCanvas");
         const ctx = cvs.getContext("2d");
 
-        cvs.width = 512;
-        cvs.height = 512;
+        cvs.width = 1024;
+        cvs.height = 1024;
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, cvs.width, cvs.height);
 
@@ -45,13 +46,11 @@
         });
         
         document.querySelector(".Mandelbrot").addEventListener("click", () => {
+            setOffset(imageMaker.image.width, imageMaker.image.height);
             imageMaker.runComponent(0, 0, (x, y, width, height) => {
-                const values = mandelbrot(x, y, 4);
-                if (x < 300 && y < 300) {
-                    console.log(values, x, y, width, height);
-                }
-                return [values[7], values[7], values[7]]
-        	});
+                const values = iterate(x, y, 250);
+                return [values.r, values.g, values.b, 255]
+            });
         });
     </script>
 </html>
