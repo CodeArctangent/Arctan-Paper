@@ -48,7 +48,7 @@
         document.querySelector(".Mandelbrot").addEventListener("click", () => {
             setOffset(imageMaker.image.width, imageMaker.image.height);
             imageMaker.runComponent(0, 0, (x, y, width, height) => {
-                const values = iterate(x, y, 250);
+                const values = iterate(x, y, 2000);
                 return [values.r, values.g, values.b, 255]
             });
         });

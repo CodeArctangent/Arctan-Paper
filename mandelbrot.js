@@ -1,12 +1,12 @@
 var offsetx = -512 / 2;
 var offsety = -512 / 2;
-var panx = -100;
+var panx = -300;
 var pany = 0;
-var zoom = 500;
+var zoom = 700;
 var palette = [];
 
 function init() {
-    generatePalette(1024, 0, 256, 256);
+    generatePalette(1024, 16, 256, 64);
 }
 
 function generatePalette(colors, rd, gd, bd) {
@@ -65,14 +65,6 @@ function zoomFractal(x, y, factor, zoomin) {
         panx = (x + offsetx + panx) / factor;
         pany = (y + offsety + pany) / factor;
     }
-}
-
-function getMousePos(canvas, e) {
-    var rect = canvas.getBoundingClientRect();
-    return {
-        x: Math.round((e.clientX - rect.left) / (rect.right - rect.left) * canvas.width),
-        y: Math.round((e.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height)
-    };
 }
 
 init();
