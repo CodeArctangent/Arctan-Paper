@@ -2,11 +2,11 @@ var offsetx = -512 / 2;
 var offsety = -512 / 2;
 var panx = -300;
 var pany = 0;
-var zoom = 700;
+var zoom = 300;
 var palette = [];
 
 function init() {
-    generatePalette(1024, 16, 256, 64);
+    generatePalette(1024, 64, 128, 192);
 }
 
 function generatePalette(colors, rd, gd, bd) {
