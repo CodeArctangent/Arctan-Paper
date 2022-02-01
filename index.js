@@ -1,4 +1,4 @@
-class PXMAN {
+class Canvas {
 	constructor(context, initWidth, initHeight, setCartesian = false) {
 		this.ctx = context;
 		this.image = this.ctx.createImageData(initWidth, initHeight);
