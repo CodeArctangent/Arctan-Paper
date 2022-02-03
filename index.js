@@ -1,25 +1,29 @@
-window.createImageBitmap = async function (data) {
-	return new Promise((resolve, reject) => {
-		let dataURL;
-		if (data instanceof Blob) {
-			dataURL = URL.createObjectURL(data);
-		} else if (data instanceof ImageData) {
-			const canvas = document.createElement('canvas');
-			const ctx = canvas.getContext('2d');
-			canvas.width = data.width;
-			canvas.height = data.height;
-			ctx.putImageData(data,0,0);
-			dataURL = canvas.toDataURL();
-		} else {
-			throw new Error('createImageBitmap does not handle the provided image source type');
-		}
-		const img = document.createElement('img');
-		img.addEventListener('load',function () {
-			resolve(this);
+// Replacement for NodeJS+Electron (Which doesnt have createImageBitmap normally)
+
+if (!window.createImageBitmap) {
+	window.createImageBitmap = async function (data) {
+		return new Promise((resolve, reject) => {
+			let dataURL;
+			if (data instanceof Blob) {
+				dataURL = URL.createObjectURL(data);
+			} else if (data instanceof ImageData) {
+				const canvas = document.createElement('canvas');
+				const ctx = canvas.getContext('2d');
+				canvas.width = data.width;
+				canvas.height = data.height;
+				ctx.putImageData(data,0,0);
+				dataURL = canvas.toDataURL();
+			} else {
+				throw new Error('createImageBitmap does not handle the provided image source type');
+			}
+			const img = document.createElement('img');
+			img.addEventListener('load',function () {
+				resolve(this);
+			});
+			img.src = dataURL;
 		});
-		img.src = dataURL;
-	});
-};
+	};
+}
 
 class Canvas {
 	constructor(canvas, initWidth, initHeight, setCartesian = false) {
@@ -84,3 +88,4 @@ class Canvas {
 		this.render(sx, sy);
 	}
 }
+
