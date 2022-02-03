@@ -1,0 +1,27 @@
+{
+  "name": "arctan.paper",
+  "version": "1.0.0",
+  "description": "A basic canvas extender for my own projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArctanStudios/Basic-Canvas-Extender.git"
+  },
+  "keywords": [
+    "canvas",
+    "electron",
+    "html",
+    "javascript",
+    "image",
+    "bitmap"
+  ],
+  "author": "SirCode",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArctanStudios/Basic-Canvas-Extender/issues"
+  },
+  "homepage": "https://github.com/ArctanStudios/Basic-Canvas-Extender#readme"
+}
