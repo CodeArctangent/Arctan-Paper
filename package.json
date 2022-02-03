@@ -1,6 +1,6 @@
 {
   "name": "arctan.paper",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A basic canvas extender for my own projects, dont expect too much",
   "main": "index.js",
   "scripts": {
