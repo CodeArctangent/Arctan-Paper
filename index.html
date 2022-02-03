@@ -19,19 +19,10 @@
     <br>
     <canvas class="rendererCanvas" wdth="100" height="100"></canvas>
 </body>
-    <script src="pxman.js"></script>
-    <script src="mandelbrot.js"></script>
+    <script src="index.js"></script>
     <script>
-        const cvs = document.querySelector(".rendererCanvas");
-        const ctx = cvs.getContext("2d");
-
-        cvs.width = 1024;
-        cvs.height = 1024;
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, cvs.width, cvs.height);
-
-        const [width, height] = [cvs.width, cvs.height];
-        const imageMaker = new PXMAN(ctx, width, height);
+        const imageMaker = new Canvas(".rendererCanvas", 1024, 1024);
+        const [width, height] = [imageMaker.width, imageMaker.height];
 
         document.querySelector(".UVB").addEventListener("click", () => {
             imageMaker.runComponent(0, 0, (x, y, width, height) => [x / width * 255, y / height * 255, (width - x) / width * 255, 255]);
@@ -46,7 +37,6 @@
         });
         
         document.querySelector(".Mandelbrot").addEventListener("click", () => {
-            setOffset(imageMaker.image.width, imageMaker.image.height);
             imageMaker.runComponent(0, 0, (x, y, width, height) => {
                 const values = iterate(x, y, 250);
                 return [values.r, values.g, values.b, 255]

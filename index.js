@@ -22,12 +22,33 @@ window.createImageBitmap = async function (data) {
 };
 
 class Canvas {
-	constructor(context, initWidth, initHeight, setCartesian = false) {
-		this.ctx = context;
+	constructor(canvas, initWidth, initHeight, setCartesian = false) {
+		let el = document.querySelector(canvas);
+		this.ctx = el.getContext('2d');
+		this.cvs = el;
 		this.image = this.ctx.createImageData(initWidth, initHeight);
 		this.cart = setCartesian;
 		this.ctx.canvas.width = initWidth;
 		this.ctx.canvas.height = initHeight;
+	}
+
+	static fromContext(context, setCartesian = false) {
+		let cvs = context.canvas;
+		let ncv = new Canvas(cvs, cvs.width, cvs.height, setCartesian);
+		ncv._context = context;
+		return ncv;
+	}
+
+	set _context(context) {
+		this.ctx = context;
+	}
+
+	get width() {
+		return this.cvs.width;
+	}
+
+	get height() {
+		return this.cvs.height;
 	}
 	
 	render(sx, sy) {
