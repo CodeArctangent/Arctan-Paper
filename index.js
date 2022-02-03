@@ -21,7 +21,7 @@ createImageBitmap = async function (data) {
 	});
 };
 
-class Canvas {
+class Paper {
 	constructor(canvas, initWidth, initHeight, setCartesian = false) {
 		let el = document.querySelector(canvas);
 		this.ctx = el.getContext('2d');
@@ -34,7 +34,7 @@ class Canvas {
 
 	static fromContext(context, setCartesian = false) {
 		let cvs = context.canvas;
-		let ncv = new Canvas(cvs, cvs.width, cvs.height, setCartesian);
+		let ncv = new Paper(cvs, cvs.width, cvs.height, setCartesian);
 		ncv._context = context;
 		return ncv;
 	}
@@ -86,6 +86,6 @@ class Canvas {
 }
 
 module.exports = {
-	Canvas,
+	Paper,
 	createImageBitmap
 };
