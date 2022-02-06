@@ -21,7 +21,7 @@ createImageBitmap = async function (data) {
 	});
 };
 
-class Paper {
+class Paper extends CanvasRenderingContext2D {
 	constructor(canvas, initWidth, initHeight, setCartesian = false) {
 		let el = document.querySelector(canvas);
 		this.ctx = el.getContext('2d');
@@ -39,8 +39,12 @@ class Paper {
 		return ncv;
 	}
 
-	set _context(context) {
+	set context(context) {
 		this.ctx = context;
+	}
+
+	get context() {
+		return this.ctx;
 	}
 
 	get width() {
@@ -50,8 +54,12 @@ class Paper {
 	get height() {
 		return this.cvs.height;
 	}
+
+
+
+	// Non-normal canvas functions
 	
-	render(sx, sy) {
+	renderCustomPixels(sx, sy) {
 		createImageBitmap(this.image).then((img) => {
 			this.ctx.drawImage(img, sx, sy);
 		});
