@@ -130,12 +130,14 @@ class Paper {
 
 	resetCustomPixels() {
 		this.image = this.ctx.createImageData(this.cvs.width, this.cvs.height);
+		return this;
 	}
 	
 	renderCustomPixels(sx, sy) {
 		createImageBitmap(this.image).then((img) => {
 			this.ctx.drawImage(img, sx, sy);
 		});
+		return this;
 	}
 
 	setPixel(x, y, r, g, b, a) {
@@ -144,6 +146,7 @@ class Paper {
 		this.image.data[pos + 1] = g;
 		this.image.data[pos + 2] = b;
 		this.image.data[pos + 3] = a;
+		return this;
 	}
 	
 	getPixel(x, y) {
@@ -162,7 +165,8 @@ class Paper {
 				this.setPixel(x, y, r, g, b, a);
 			}
 		}
-		this.render(sx, sy);
+		this.renderCustomPixels(sx, sy);
+		return this;
 	}
 }
 
