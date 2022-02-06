@@ -105,27 +105,69 @@ class Paper {
 
 	// Custom drawing functions
 
+	beginPath() {
+		this.ctx.beginPath();
+	}
+
+	closePath() {
+		this.ctx.closePath();
+	}
+
+	save() {
+		this.ctx.save();
+	}
+
+	restore() {
+		this.ctx.restore();
+	}
+
+	rect(x, y, width, height) {
+		y = this.cart ? this.cvs.height - y - height : y;
+		this.ctx.rect(x, y, width, height);
+		return this;
+	}
+
 	clearRect(x, y, width, height) {
-		y = this.cart ? this.cvs.height - y : y;
-		height = this.cart ? height * -1 : height;
+		y = this.cart ? this.cvs.height - y - height : y;
 		this.ctx.clearRect(x, y, width, height);
 		return this;
 	}
 
 	fillRect(x, y, width, height) {
-		y = this.cart ? this.cvs.height - y : y;
-		height = this.cart ? height * -1 : height;
+		y = this.cart ? this.cvs.height - y - height : y;
 		this.ctx.fillRect(x, y, width, height);
 		return this;
 	}
 
 	strokeRect(x, y, width, height) {
-		y = this.cart ? this.cvs.height - y : y;
-		height = this.cart ? height * -1 : height;
+		y = this.cart ? this.cvs.height - y - height : y;
 		this.ctx.strokeRect(x, y, width, height);
 		return this;
 	}
 
+	stroke() {
+		this.ctx.stroke();
+		return this;
+	}
+
+	fill() {
+		this.ctx.fill();
+		return this;
+	}
+
+	rotatePoint(x, y, radians) {
+		y = this.cart ? this.cvs.height - y : y;
+		this.ctx.translate(x, y);
+		this.ctx.rotate(radians);
+		this.ctx.translate(x * -1, y * -1);
+		return this;
+	}
+
+	rotate(radians) {
+		this.ctx.rotate(radians);
+		return this;
+	}
+	
 	// Non-normal canvas functions
 
 	resetCustomPixels() {
