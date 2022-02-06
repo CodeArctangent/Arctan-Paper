@@ -21,7 +21,7 @@ createImageBitmap = async function (data) {
 	});
 };
 
-class Paper extends CanvasRenderingContext2D {
+class Paper {
 	constructor(canvas, initWidth, initHeight, setCartesian = false) {
 		let el = document.querySelector(canvas);
 		this.ctx = el.getContext('2d');
@@ -54,10 +54,24 @@ class Paper extends CanvasRenderingContext2D {
 	get height() {
 		return this.cvs.height;
 	}
+	
+	// Variables
 
+	set fillStyle(str) {
+		this.ctx.fillStyle = str;
+	}
 
+	// Custom drawing functions
+
+	fillRect(x, y, w, h) {
+		this.ctx.fillRect(x, this.cart ? y - this.cvs.height * -1 : y, w, h);
+	}
 
 	// Non-normal canvas functions
+
+	resetCustomPixels() {
+		this.image = this.ctx.createImageData(this.cvs.width, this.cvs.height);
+	}
 	
 	renderCustomPixels(sx, sy) {
 		createImageBitmap(this.image).then((img) => {
