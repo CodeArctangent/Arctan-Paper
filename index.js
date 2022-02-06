@@ -22,49 +22,108 @@ createImageBitmap = async function (data) {
 };
 
 class Paper {
-	constructor(canvas, initWidth, initHeight, setCartesian = false) {
+	constructor(canvas, initWidth, initHeight) {
 		let el = document.querySelector(canvas);
 		this.ctx = el.getContext('2d');
 		this.cvs = el;
 		this.image = this.ctx.createImageData(initWidth, initHeight);
-		this.cart = setCartesian;
 		this.ctx.canvas.width = initWidth;
 		this.ctx.canvas.height = initHeight;
 	}
 
-	static fromContext(context, setCartesian = false) {
+	static fromContext(context) {
 		let cvs = context.canvas;
-		let ncv = new Paper(cvs, cvs.width, cvs.height, setCartesian);
+		let ncv = new Paper(cvs, cvs.width, cvs.height);
 		ncv._context = context;
 		return ncv;
 	}
 
 	set context(context) {
 		this.ctx = context;
+		return this;
 	}
 
 	get context() {
 		return this.ctx;
 	}
 
+	set width(width) {
+		this.cvs.width = width;
+		return this;
+	}
+
 	get width() {
 		return this.cvs.width;
 	}
 
+	set height(height) {
+		this.cvs.height = height;
+		return this;
+	}
+
 	get height() {
 		return this.cvs.height;
+	}
+
+	set cartesian(bool) {
+		this.cart = bool;
+		return this;
+	}
+
+	get cartesian() {
+		return this.cart;
 	}
 	
 	// Variables
 
 	set fillStyle(str) {
 		this.ctx.fillStyle = str;
+		return this;
+	}
+
+	get fillStyle() {
+		return this.ctx.fillStyle;
+	}
+
+	set strokeStyle(str) {
+		this.ctx.strokeStyle = str;
+		return this;
+	}
+
+	get strokeStyle() {
+		return this.ctx.strokeStyle;
+	}
+
+	set lineWidth(str) {
+		this.ctx.lineWidth = str;
+		return this;
+	}
+
+	get lineWidth() {
+		return this.ctx.lineWidth;
 	}
 
 	// Custom drawing functions
 
-	fillRect(x, y, w, h) {
-		this.ctx.fillRect(x, this.cart ? y - this.cvs.height * -1 : y, w, h);
+	clearRect(x, y, width, height) {
+		y = this.cart ? this.cvs.height - y : y;
+		height = this.cart ? height * -1 : height;
+		this.ctx.clearRect(x, y, width, height);
+		return this;
+	}
+
+	fillRect(x, y, width, height) {
+		y = this.cart ? this.cvs.height - y : y;
+		height = this.cart ? height * -1 : height;
+		this.ctx.fillRect(x, y, width, height);
+		return this;
+	}
+
+	strokeRect(x, y, width, height) {
+		y = this.cart ? this.cvs.height - y : y;
+		height = this.cart ? height * -1 : height;
+		this.ctx.strokeRect(x, y, width, height);
+		return this;
 	}
 
 	// Non-normal canvas functions
