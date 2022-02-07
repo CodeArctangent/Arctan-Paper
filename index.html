@@ -21,26 +21,11 @@
 </body>
     <script src="index.js"></script>
     <script>
-        const imageMaker = new Canvas(".rendererCanvas", 1024, 1024);
-        const [width, height] = [imageMaker.width, imageMaker.height];
-
-        document.querySelector(".UVB").addEventListener("click", () => {
-            imageMaker.runComponent(0, 0, (x, y, width, height) => [x / width * 255, y / height * 255, (width - x) / width * 255, 255]);
-        });
-
-        document.querySelector(".UV").addEventListener("click", () => {
-            imageMaker.runComponent(0, 0, (x, y, width, height) => [x / width * 255, y / height * 255, 0, 255]);
-        });
-
-        document.querySelector(".SIN").addEventListener("click", () => {
-            imageMaker.runComponent(0, 0, (x, y, width, height) => [x / width * Math.sin(x * 8) * 255, y / height * Math.cos(y * 8) * 255, 255 * Math.asin(x * y), 255]);
-        });
-        
-        document.querySelector(".Mandelbrot").addEventListener("click", () => {
-            imageMaker.runComponent(0, 0, (x, y, width, height) => {
-                const values = iterate(x, y, 250);
-                return [values.r, values.g, values.b, 255]
-            });
-        });
+        const paper = new Paper(".rendererCanvas", 512, 512);
+        paper.fillStyle = 'white';
+        paper.fillArc(40, 40, 10, 0, Math.PI);
+        paper.cartesian = true;
+        paper.fillArc(40, 40, 10, 0, Math.PI);
+        paper.rotatePoint(...paper.center, 10);
     </script>
 </html>

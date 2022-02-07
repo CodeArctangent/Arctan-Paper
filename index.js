@@ -103,6 +103,10 @@ class Paper {
 		return this.ctx.lineWidth;
 	}
 
+	get center() {
+		return [this.cvs.width / 2, this.cvs.height / 2];
+	}
+
 	// Custom drawing functions
 
 	beginPath() {
@@ -146,10 +150,41 @@ class Paper {
 	}
 
 	arc(x, y, radius, start, end, ccw = false) {
-		y = this.cart ? this.cvs.height - y - height : y;
+		y = this.cart ? this.cvs.height - y : y;
 		start = this.cart ? (start + Math.PI) % (2 * Math.PI) : start;
 		end = this.cart ? (end + Math.PI) % (2 * Math.PI) : end;
 		this.ctx.arc(x, y, radius, start, end, ccw);
+		return this;
+	}
+
+	fillArc(x, y, radius, start, end, ccw = false) {
+		this.ctx.beginPath();
+		this.arc(x, y, radius, start, end, ccw);
+		this.ctx.fill();
+		this.ctx.closePath();
+		return this;
+	}
+
+	strokeArc(x, y, radius, start, end, ccw = false) {
+		this.ctx.beginPath();
+		this.arc(x, y, radius, start, end, ccw);
+		this.ctx.stroke();
+		this.ctx.closePath();
+		return this;
+	}
+
+	circle(x, y, radius) {
+		this.arc(x, y, radius, 0, Math.PI * 2);
+		return this;
+	}
+
+	fillCircle(x, y, radius) {
+		this.fillArc(x, y, radius, 0, Math.PI * 2);
+		return this;
+	}
+
+	strokeCircle(x, y, radius) {
+		this.strokeArc(x, y, radius, 0, Math.PI * 2);
 		return this;
 	}
 
@@ -222,7 +257,7 @@ class Paper {
 	}
 }
 
-module.exports = {
-	Paper,
-	createImageBitmap
-};
+// module.exports = {
+// 	Paper,
+// 	createImageBitmap
+// };
