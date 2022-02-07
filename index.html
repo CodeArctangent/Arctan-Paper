@@ -12,20 +12,20 @@
     </style>
 </head>
 <body>
-    <button class="UVB">UVB Map</button>
-    <button class="UV">UV Map</button>
-    <button class="SIN">Sine/Cosine Testing</button>
-    <button class="Mandelbrot">Mandelbrot</button>
-    <br>
     <canvas class="rendererCanvas" wdth="100" height="100"></canvas>
 </body>
     <script src="index.js"></script>
     <script>
         const paper = new Paper(".rendererCanvas", 512, 512);
         paper.fillStyle = 'white';
-        paper.fillArc(40, 40, 10, 0, Math.PI);
+        let types = [50, 50, 20];
+        paper.fillArc(...types, 0, Math.PI);
         paper.cartesian = true;
-        paper.fillArc(40, 40, 10, 0, Math.PI);
-        paper.rotatePoint(...paper.center, 10);
+        paper.fillArc(...types, 0, Math.PI);
+        paper.rotatePoint(...paper.center, (Math.PI / 180) * 90);
+        paper.cartesian = false;
+        paper.fillArc(...types, 0, Math.PI);
+        paper.cartesian = true;
+        paper.fillArc(...types, 0, Math.PI);
     </script>
 </html>

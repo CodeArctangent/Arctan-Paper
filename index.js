@@ -255,6 +255,20 @@ class Paper {
 		this.renderCustomPixels(sx, sy);
 		return this;
 	}
+
+	// Static Methods
+
+	static lerp(stt, end, fac) {
+        return stt * (1 - fac) + end * fac;
+    }
+
+    static toDegrees(rad) {
+        return (180 / Math.PI) * rad;
+    }
+
+    static toRadians(deg) {
+        return (Math.PI / 180) * deg;
+    }
 }
 
 // module.exports = {
