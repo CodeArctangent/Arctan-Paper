@@ -145,6 +145,14 @@ class Paper {
 		return this;
 	}
 
+	arc(x, y, radius, start, end, ccw = false) {
+		y = this.cart ? this.cvs.height - y - height : y;
+		start = this.cart ? (start + Math.PI) % (2 * Math.PI) : start;
+		end = this.cart ? (end + Math.PI) % (2 * Math.PI) : end;
+		this.ctx.arc(x, y, radius, start, end, ccw);
+		return this;
+	}
+
 	stroke() {
 		this.ctx.stroke();
 		return this;
@@ -157,6 +165,7 @@ class Paper {
 
 	rotatePoint(x, y, radians) {
 		y = this.cart ? this.cvs.height - y : y;
+		radians = this.cart ? (radians + Math.PI) % (2 * Math.PI) : radians;
 		this.ctx.translate(x, y);
 		this.ctx.rotate(radians);
 		this.ctx.translate(x * -1, y * -1);
@@ -164,6 +173,7 @@ class Paper {
 	}
 
 	rotate(radians) {
+		radians = this.cart ? (radians + Math.PI) % (2 * Math.PI) : radians;
 		this.ctx.rotate(radians);
 		return this;
 	}
