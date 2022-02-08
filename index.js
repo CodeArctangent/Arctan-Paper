@@ -337,7 +337,7 @@ class Paper {
     }
 }
 
-// module.exports = {
-// 	Paper,
-// 	createImageBitmap
-// };
+module.exports = {
+	Paper,
+	createImageBitmap
+};
