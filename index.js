@@ -21,6 +21,20 @@ createImageBitmap = async function (data) {
 	});
 };
 
+class BetterTextMetrics {
+	constructor(metrics) {
+		this.metrics = metrics;
+	}
+
+	get width() {
+		return Math.abs(this.metrics.actualBoundingBoxLeft) + Math.abs(this.metrics.actualBoundingBoxRight);
+	}
+
+	get height() {
+		return Math.abs(this.metrics.actualBoundingBoxDescent) + Math.abs(this.metrics.actualBoundingBoxAscent);
+	}
+}
+
 class Paper {
 	constructor(canvas, initWidth, initHeight) {
 		let el = document.querySelector(canvas);
@@ -29,6 +43,7 @@ class Paper {
 		this.image = this.ctx.createImageData(initWidth, initHeight);
 		this.ctx.canvas.width = initWidth;
 		this.ctx.canvas.height = initHeight;
+		this.cart = false;
 	}
 
 	static fromContext(context) {
@@ -64,15 +79,6 @@ class Paper {
 	get height() {
 		return this.cvs.height;
 	}
-
-	set cartesian(bool) {
-		this.cart = bool;
-		return this;
-	}
-
-	get cartesian() {
-		return this.cart;
-	}
 	
 	// Variables
 
@@ -94,6 +100,12 @@ class Paper {
 		return this.ctx.strokeStyle;
 	}
 
+	set style(str) {
+		this.ctx.fillStyle = str;
+		this.ctx.strokeStyle = str;
+		return this;
+	}
+
 	set lineWidth(str) {
 		this.ctx.lineWidth = str;
 		return this;
@@ -107,6 +119,24 @@ class Paper {
 		return [this.cvs.width / 2, this.cvs.height / 2];
 	}
 
+	set yUp(bool) {
+		this.cart = bool;
+		return this;
+	}
+
+	get yUp() {
+		return this.cart;
+	}
+
+	set imageSmoothing(bool) {
+		this.ctx.imageSmoothingEnabled = bool;
+		return this;
+	}
+
+	get imageSmoothing() {
+		return this.ctx.imageSmoothingEnabled;
+	}
+
 	// Custom drawing functions
 
 	beginPath() {
@@ -115,6 +145,14 @@ class Paper {
 
 	closePath() {
 		this.ctx.closePath();
+	}
+
+	scale(x, y) {
+		this.ctx.scale(x, y);
+	}
+
+	translate(x, y) {
+		this.ctx.translate(x, y);
 	}
 
 	save() {
@@ -151,8 +189,8 @@ class Paper {
 
 	arc(x, y, radius, start, end, ccw = false) {
 		y = this.cart ? this.cvs.height - y : y;
-		start = this.cart ? (start + Math.PI) % (2 * Math.PI) : start;
-		end = this.cart ? (end + Math.PI) % (2 * Math.PI) : end;
+		start = this.cart ? start + Math.PI : start;
+		end = this.cart ? end + Math.PI : end;
 		this.ctx.arc(x, y, radius, start, end, ccw);
 		return this;
 	}
@@ -173,18 +211,49 @@ class Paper {
 		return this;
 	}
 
-	circle(x, y, radius) {
+	circ(x, y, radius) {
 		this.arc(x, y, radius, 0, Math.PI * 2);
 		return this;
 	}
 
-	fillCircle(x, y, radius) {
+	fillCirc(x, y, radius) {
 		this.fillArc(x, y, radius, 0, Math.PI * 2);
 		return this;
 	}
 
-	strokeCircle(x, y, radius) {
+	strokeCirc(x, y, radius) {
 		this.strokeArc(x, y, radius, 0, Math.PI * 2);
+		return this;
+	}
+
+	measureText(text) {
+		return new BetterTextMetrics(this.ctx.measureText(text));
+	}
+
+	fillText(text, x, y, mw) {
+		let height = this.measureText(text).height;
+		y = this.cart ? this.cvs.height - y - height : y;
+		this.ctx.fillText(text, x, y, mw);
+		return this;
+	}
+
+	drawImage(image, ...data) {
+		if (data.length == 2)
+			data[1] = this.cart ? this.cvs.height - data[1] : data[1];
+		else if (data.length == 4)
+			data[1] = this.cart ? this.cvs.height - data[1] - data[3] : data[1];
+		else if (data.length == 8)
+			data[1] = this.cart ? this.cvs.height - data[5] - data[7] : data[1];
+		this.ctx.drawImage(image, ...data);
+		return this;
+	}
+
+	line(x, y, tx, ty) {
+		this.ctx.beginPath();
+		this.ctx.moveTo(x, y);
+		this.ctx.lineTo(tx, ty);
+		this.ctx.stroke();
+		this.ctx.closePath();
 		return this;
 	}
 
@@ -199,8 +268,6 @@ class Paper {
 	}
 
 	rotatePoint(x, y, radians) {
-		y = this.cart ? this.cvs.height - y : y;
-		radians = this.cart ? (radians + Math.PI) % (2 * Math.PI) : radians;
 		this.ctx.translate(x, y);
 		this.ctx.rotate(radians);
 		this.ctx.translate(x * -1, y * -1);
@@ -208,7 +275,6 @@ class Paper {
 	}
 
 	rotate(radians) {
-		radians = this.cart ? (radians + Math.PI) % (2 * Math.PI) : radians;
 		this.ctx.rotate(radians);
 		return this;
 	}

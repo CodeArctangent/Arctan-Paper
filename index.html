@@ -16,16 +16,35 @@
 </body>
     <script src="index.js"></script>
     <script>
-        const paper = new Paper(".rendererCanvas", 512, 512);
-        paper.fillStyle = 'white';
-        let types = [50, 50, 20];
-        paper.fillArc(...types, 0, Math.PI);
-        paper.cartesian = true;
-        paper.fillArc(...types, 0, Math.PI);
-        paper.rotatePoint(...paper.center, (Math.PI / 180) * 90);
-        paper.cartesian = false;
-        paper.fillArc(...types, 0, Math.PI);
-        paper.cartesian = true;
-        paper.fillArc(...types, 0, Math.PI);
+        let types = [200, 300, 20];
+        let tex = new Image();
+        tex.src = './grass_block_side.png';
+        tex.onload = function() {
+            const papr = new Paper(".rendererCanvas", 512, 512);
+            papr.imageSmoothing = false;
+
+            papr.style = 'rgb(255, 100, 100)';
+            papr.fillRect(100, papr.center[1] + 20, 50, 50);
+            papr.fillArc(...types, 0, Math.PI);
+            papr.strokeCirc(...types);
+            papr.strokeCirc(0, 0, 100);
+            papr.fillArc(types[0] + 50, types[1], 10, 0, Math.PI * 1.5);
+            papr.drawImage(tex, 300, papr.center[1] + 20, 64, 64);
+
+            papr.style = 'white';
+            papr.fillCirc(...papr.center, 4);
+            papr.strokeCirc(...papr.center, types[0]);
+            papr.line(0, papr.center[1], papr.width, papr.center[1]);
+
+            papr.yUp = true; // Convert to Cartesian
+
+            papr.style = 'rgb(100, 255, 100)';
+            papr.fillRect(100, papr.center[1] + 20, 50, 50);
+            papr.fillArc(...types, 0, Math.PI);
+            papr.strokeCirc(...types);
+            papr.strokeCirc(0, 0, 100);
+            papr.fillArc(types[0] + 50, types[1], 10, 0, Math.PI * 1.5);
+            papr.drawImage(tex, 300, papr.center[1] + 20, 64, 64);
+        }
     </script>
 </html>
