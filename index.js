@@ -137,6 +137,26 @@ class Paper {
 		return this.ctx.imageSmoothingEnabled;
 	}
 
+	// Special Functions
+
+	beginRenderLoop(callback) {
+		this.frame = window.requestAnimationFrame(() => {
+			this.renderLoop();
+		});
+		this.renderFunc = callback;
+	}
+
+	pauseRenderLoop() {
+		window.cancelAnimationFrame(this.frame);
+	}
+
+	renderLoop() {
+		this.frame = window.requestAnimationFrame(() => {
+			this.renderFunc();
+			this.renderLoop();
+		});
+	}
+
 	// Custom drawing functions
 
 	beginPath() {
@@ -185,6 +205,13 @@ class Paper {
 		y = this.cart ? this.cvs.height - y - height : y;
 		this.ctx.strokeRect(x, y, width, height);
 		return this;
+	}
+
+	pixel(x, y, color) {
+		this.ctx.save();
+		this.ctx.fillStyle = color;
+		this.fillRect(x, y, 1, 1);
+		this.ctx.restore();
 	}
 
 	arc(x, y, radius, start, end, ccw = false) {
