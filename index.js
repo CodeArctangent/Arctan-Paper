@@ -21,7 +21,7 @@ createImageBitmap = async function (data) {
 	});
 };
 
-class BetterTextMetrics {
+class BetterTextMetrics { // Replace the shitty normal text metrics that canvas uses which has inaccurate width, and doesnt support height??
 	constructor(metrics) {
 		this.metrics = metrics;
 	}
@@ -140,6 +140,7 @@ class Paper {
 	// Special Functions
 
 	beginRenderLoop(callback) {
+		this.time = 0;
 		this.frame = window.requestAnimationFrame(() => {
 			this.renderLoop();
 		});
@@ -151,13 +152,36 @@ class Paper {
 	}
 
 	renderLoop() {
+		this.time += 16.666667; // 1000 / 60 - 60 frames per second
 		this.frame = window.requestAnimationFrame(() => {
-			this.renderFunc();
+			this.renderFunc(this.time, this.time / 1000);
 			this.renderLoop();
 		});
 	}
 
 	// Custom drawing functions
+
+	debugAxis(x, y, radius) {
+		this.save();
+		this.fillStyle = 'white';
+		this.ctx.font = '16px "Times New Roman"';
+		this.lineWidth = 2;
+		this.strokeStyle = 'rgb(255, 0, 0)';
+		this.line(x, y, x + radius, y);
+		this.strokeStyle = 'rgb(0, 255, 0)';
+		this.line(x, y, x, y + radius);
+		let str = this.cart ? 'Cartesian Coords' : 'Non-Cartesian Coords';
+		let text = this.measureText(str);
+		this.strokeStyle = 'gray';
+		this.lineWidth = 1;
+		this.strokeRect(x + 2, y + 2, text.width + 4, text.height + 4);
+		this.fillText(str, x + 4, y + 4);
+		this.restore();
+	}
+
+	clear() {
+		this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
+	}
 
 	beginPath() {
 		this.ctx.beginPath();
@@ -258,9 +282,16 @@ class Paper {
 	}
 
 	fillText(text, x, y, mw) {
+		let txt = this.measureText(text);
+		y = this.cart ? this.cvs.height - y : y;
+		this.ctx.fillText(text, x, y, mw);
+		return this;
+	}
+
+	strokeText(text, x, y, mw) {
 		let height = this.measureText(text).height;
 		y = this.cart ? this.cvs.height - y - height : y;
-		this.ctx.fillText(text, x, y, mw);
+		this.ctx.strokeText(text, x, y, mw);
 		return this;
 	}
 
@@ -276,6 +307,8 @@ class Paper {
 	}
 
 	line(x, y, tx, ty) {
+		y = this.cart ? this.cvs.height - y : y;
+		ty = this.cart ? this.cvs.height - ty : ty;
 		this.ctx.beginPath();
 		this.ctx.moveTo(x, y);
 		this.ctx.lineTo(tx, ty);
@@ -364,7 +397,7 @@ class Paper {
     }
 }
 
-module.exports = {
-	Paper,
-	createImageBitmap
-};
+// module.exports = {
+// 	Paper,
+// 	createImageBitmap
+// };

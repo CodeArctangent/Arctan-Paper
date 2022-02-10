@@ -1,0 +1,36 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html, body {
+            background: black;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <canvas class="rendererCanvas" wdth="100" height="100"></canvas>
+</body>
+    <script src="index.js"></script>
+    <script>
+        const paper = new Paper(".rendererCanvas", 512, 512);
+        paper.yUp = true;
+        let angle = 0;
+        paper.beginRenderLoop((time, timedOne) => {
+            paper.clear();
+            paper.style = 'white';
+            paper.fillCirc(...paper.center, 5);
+            paper.strokeCirc(...paper.center, 100);
+            paper.debugAxis(100, 100, 30);
+            paper.fillStyle = 'red';
+            paper.save();
+            paper.rotatePoint(...paper.center, Paper.toRadians(angle));
+            paper.fillCirc(paper.center[0] + 100, paper.center[1], 10);
+            angle++;
+            paper.restore();
+        })
+    </script>
+</html>
