@@ -62,6 +62,10 @@ class Paper {
 		return this.ctx;
 	}
 
+	get canvas() {
+		return this.ctx.canvas;
+	}
+
 	set width(width) {
 		this.cvs.width = width;
 		return this;
