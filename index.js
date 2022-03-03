@@ -24,6 +24,7 @@ createImageBitmap = async function (data) {
 class BetterTextMetrics { // Replace the shitty normal text metrics that canvas uses which has inaccurate width, and doesnt support height??
 	constructor(metrics) {
 		this.metrics = metrics;
+		return this;
 	}
 
 	get width() {
@@ -187,6 +188,10 @@ class Paper {
 		this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
 	}
 
+	cover() {
+		this.ctx.fillRect(0, 0, this.cvs.width, this.cvs.height);
+	}
+
 	beginPath() {
 		this.ctx.beginPath();
 	}
@@ -233,13 +238,6 @@ class Paper {
 		y = this.cart ? this.cvs.height - y - height : y;
 		this.ctx.strokeRect(x, y, width, height);
 		return this;
-	}
-
-	pixel(x, y, color) {
-		this.ctx.save();
-		this.ctx.fillStyle = color;
-		this.fillRect(x, y, 1, 1);
-		this.ctx.restore();
 	}
 
 	arc(x, y, radius, start, end, ccw = false) {
@@ -319,6 +317,13 @@ class Paper {
 		this.ctx.stroke();
 		this.ctx.closePath();
 		return this;
+	}
+
+	drawPixel(x, y, color) {
+		this.ctx.save();
+		this.ctx.fillStyle = color;
+		this.fillRect(x, y, 1, 1);
+		this.ctx.restore();
 	}
 
 	stroke() {
