@@ -45,6 +45,22 @@ class Paper {
 		this.ctx.canvas.width = initWidth;
 		this.ctx.canvas.height = initHeight;
 		this.cart = false;
+		this.mouse = [0, 0];
+		document.onmousemove = (event) => {
+			event = event || window.event;
+			if (event.pageX == null && event.clientX != null) {
+				eventDoc = (event.target && event.target.ownerDocument) || document;
+				doc = eventDoc.documentElement;
+				body = eventDoc.body;
+				event.pageX = event.clientX +
+					(doc && doc.scrollLeft || body && body.scrollLeft || 0) -
+					(doc && doc.clientLeft || body && body.clientLeft || 0);
+				event.pageY = event.clientY +
+					(doc && doc.scrollTop || body && body.scrollTop || 0) -
+					(doc && doc.clientTop || body && body.clientTop || 0);
+			}
+			this.mouse = [event.pageX, this.cart ? this.cvs.height - event.pageY + 30 : event.pageY];
+		}
 	}
 
 	static fromContext(context) {
@@ -159,7 +175,7 @@ class Paper {
 	renderLoop() {
 		this.time += 16.666667; // 1000 / 60 - 60 frames per second
 		this.frame = window.requestAnimationFrame(() => {
-			this.renderFunc(this.time, this.time / 1000);
+			this.renderFunc(this.time, this.time / 1000, this.mouse);
 			this.renderLoop();
 		});
 	}
