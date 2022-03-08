@@ -59,7 +59,7 @@ class Paper {
 					(doc && doc.scrollTop || body && body.scrollTop || 0) -
 					(doc && doc.clientTop || body && body.clientTop || 0);
 			}
-			this.mouse = [event.pageX, this.cart ? this.cvs.height - event.pageY + 30 : event.pageY];
+			this.mouse = [event.pageX, this.cart ? this.cvs.height - event.pageY : event.pageY];
 		}
 	}
 
